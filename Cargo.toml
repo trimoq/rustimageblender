@@ -1,0 +1,8 @@
+[package]
+name = "rawblender"
+version = "0.1.0"
+authors = ["Marco Amann <marco@pfudi.de>"]
+
+[dependencies]
+#rawloader = "0.35.3"
+image = "0.20.1"
