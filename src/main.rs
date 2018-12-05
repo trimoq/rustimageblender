@@ -1,10 +1,4 @@
-use std::env;
-use std::fs::File;
-use std::io::prelude::*;
-use std::io::BufWriter;
-
-use std::io;
-use std::fs::{self, DirEntry};
+use std::fs;
 use std::path::Path;
 
 extern crate image;
@@ -15,17 +9,15 @@ use std::path::PathBuf;
 
 fn main() {
 
-    let v = findAllFiles(Path::new("images"));
+    let v = find_all_files(Path::new("images"));
 
-    //let firstImage = loadImages(vec![*v.iter().next().unwrap()]);
-
-    let mut v = loadImages(v);
+    let v = load_images(v);
 
     let (x,y) = v.iter().next().unwrap().dimensions();
 
     let mut result = image::RgbImage::new(x,y);
 
-    result.enumerate_pixels_mut().for_each( |(px,py, mut pix)| {
+    result.enumerate_pixels_mut().for_each( |(px,py, pix)| {
         let mut acc_r :u64 =0;
         let mut acc_g :u64 =0;
         let mut acc_b :u64 =0;
@@ -43,12 +35,10 @@ fn main() {
     }
     );
     result.save("out.jpg").unwrap();
-
-
-
 }
 
-fn findAllFiles(dir: &Path) -> Vec<PathBuf> {
+
+fn find_all_files(dir: &Path) -> Vec<PathBuf> {
 
     let mut v = vec![];
 
@@ -67,7 +57,7 @@ fn findAllFiles(dir: &Path) -> Vec<PathBuf> {
     return v;
 }
 
-fn loadImages(paths: Vec<PathBuf>) -> Vec<DynamicImage> {
+fn load_images(paths: Vec<PathBuf>) -> Vec<DynamicImage> {
     let mut v = vec![];
     for path in paths{
         let img = image::open(&path);
